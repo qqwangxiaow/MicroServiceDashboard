@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Intel MicroService Dashboard -- Performance</title>
+
+{% endblock %}
+{% block webtitle %}
+<h4 class="page-title pull-left">Performance</h4>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/build.css') }}">
+{% endblock %}
+{% block subTitle %}
+<li><span>Performance</span></li>
+{% endblock %}
+{% block maincontent %}
+<!-- bootstrap -->
+
+<!-- bootstrap-select -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+<div style="height:30px;background-color:white;"></div>
+<div class="main-content-inner" style="background-color:white;">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color:white;text-align:center">
+        <div class="col-lg-6 col-md-9 col-sm-12 col-xs-12" style="margin:0 auto;">
+            <div class="input-group" style="margin: 0 auto">
+                <input id="SearchInput" type="text" class="form-control" placeholder="Search by MicroService name">
+                <span class="input-group-btn">
+                        <button id="resetTable" class="btn btn-default" style="background-color:#005bc2;color:white;"
+                                type="button">Go!</button>
+                    </span>
+            </div><!-- /input-group -->
+            <div style="height:30px;"></div>
+            <div style="height:30px;width:400px;margin:0 auto;">
+<!--                <div class="checkbox checkbox-primary" style="display:inline-block;">-->
+<!--                    <input type="radio" name="radio4" id="radio7" value="option1" checked>-->
+<!--                    <label for="radio7">Default Docker</label>-->
+<!--                </div>-->
+<!--                <div class="checkbox checkbox-primary" style="display:inline-block;">-->
+<!--                    <input type="radio" name="radio4" id="radio8" value="option2">-->
+<!--                    <label for="radio8">Clear Docker</label>-->
+<!--                </div>-->
+            </div>
+        </div><!-- /.col-lg-6 -->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 mt-12">
+                <div class="card">
+                    <div id="lineChart_performance" style="height:350px;max-width: 1920px;"></div>
+                    <div style="height:35px;"></div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <table id="example" class="layui-table t_head" lay-size="sm" role="grid"
+                   aria-describedby="example_info" style="width:100%;">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/linechartperformance.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        var enumData;
+        var data;
+        $.ajax({
+            async: false,
+            type: 'GET',
+            url: "/v1/data/json",
+            success: function (json) {
+                enumData = json;
+            },
+            dataType: "json"
+        });
+        $.ajax({
+            async: false,
+            type: 'GET',
+            url: "/v1/data/size",
+            data: {"microservice": 1001},
+            success: function (json) {
+                data = json;
+            },
+            dataType: "json"
+        });
+        var table = $('#example').DataTable({
+            paging: true,
+            lengthChange: true,
+            columns: data.columns,
+            data: data.rows,
+            language: {
+                bAutoWidth: true,
+                emptyTable: 'No Data',
+                loadingRecords: 'Loading...',
+                processing: 'Query in progress...',
+                search: '<i class="fa fa-search"></i>',
+                lengthMenu: 'Page _MENU_ items',
+                zeroRecords: 'No Data',
+                paginate: {
+                    'first': 'First',
+                    'last': 'Last',
+                    'next': 'Next',
+                    'previous': 'Prev'
+                },
+                info: '<strong><strong>_PAGE_ / _PAGES_ Pages&nbsp;&nbsp;&nbsp;&nbsp;',
+                infoEmpty: 'No DATA',
+                infoFiltered: '(Total filter _MAX_ items)'
+            },
+        });
+        $("[aria-controls='example']").attr("placeholder", "  filter data");
+        $("#resetTable").on('click', function () {
+            var micro = $("#SearchInput").val().trim().toUpperCase()
+            if (micro && enumData.hasOwnProperty(micro)) {
+                showOverlay();
+                $.ajax({
+                    "Content-Type": "application/json",
+                    async: false,
+                    url: "/v1/data/size",
+                    data: {microservice: enumData[micro]},
+                    success: function (json) {
+                        $.each(json.sizeData,function(index,value){
+                            option_performance.series[index].data=value;
+                        });
+                        lineChart_performance.setOption(option_performance);
+                        reset(json);
+                        $("#example th:eq(4)").trigger("click").trigger("click");
+                        hideOverlay();
+                    }
+                });
+            } else {
+                $("#SearchInput").val("");
+                $("#SearchInput").attr("placeholder", "Invalid MicroService Name")
+            }
+        });
+
+        function reset(json){
+                                    table.destroy();
+                                    $('#example').empty();
+                                    table = $('#example').DataTable( {
+                                                                    bAutoWidth: true,//自动宽度
+                                                                    paging: true,
+                                                                    lengthChange: true,
+                                                                    info: true,
+                                                                    destroy: true,
+                                                                    deferRender: true,
+                                                                    columns: json.columns,
+                                                                    data:    json.rows,
+                                                                    language: {
+			                                                                    emptyTable: 'No Data',
+			                                                                    loadingRecords: 'Loading...',
+			                                                                    processing: 'Query in progress...',
+			                                                                    search: '<i class="fa fa-search"></i>',
+			                                                                    lengthMenu: 'Page _MENU_ items',
+			                                                                    zeroRecords: 'No Data',
+			                                                                    paginate: {
+			                                                                    	'first':      'First',
+			                                                                    	'last':       'Last',
+			                                                                    	'next':       'Next',
+			                                                                    	'previous':   'Prev'
+			                                                                    },
+			                                                                    info: '<strong><strong>_PAGE_ / _PAGES_ Pages',
+			                                                                    infoEmpty: 'No DATA',
+			                                                                    infoFiltered: '(Total filter _MAX_ items)',
+		                                                                       },
+                                    });
+                                    $("[aria-controls='example']").attr("placeholder","filter by column value")
+        }
+    });
+
+
+
+</script>
+{% endblock %}

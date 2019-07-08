@@ -1,0 +1,374 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Intel MicroService Dashboard -- Overall</title>
+{% endblock %}
+{% block webtitle %}
+<h4 class="page-title pull-left">Overall</h4>
+{% endblock %}
+{% block subTitle %}
+<li><span>Overall</span></li>
+{% endblock %}
+{% block maincontent %}
+<div class="main-content-inner" style="background-color:white;">
+    <div style="height:25px;"></div>
+    <div class="row">
+        <div class="col-lg-12 mt-12">
+            <div class="card">
+                <div id="OverallPie" style="height:350px;max-width: 1920px;"></div>
+            </div>
+        </div>
+        <!--        <div id="bbbb"></div>-->
+        <form style="margin-left:auto">
+            <div class="row">
+                <div id="getBarData1">
+                </div>
+                <a class="layui-btn sumbit" style="color:#fff;" type="sumbit">GET DATA</a>
+            </div>
+        </form>
+        <div class="col-lg-12 col-12 mt-12">
+            <div class="card">
+                <div id="OverallBar2" style="height:350px;max-width: 1920px;"></div>
+            </div>
+        </div>
+        <form style="margin-left:auto">
+            <div class="row">
+                <div id="getBarData2">
+                </div>
+                <a class="layui-btn submit02" style="color:#fff;" type="sumbit">GET DATA</a>
+            </div>
+        </form>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div id="OverallBar" style="height:350px;max-width: 1920px;"></div>
+                <div id="demo1" class="card-body collapse col-lg-10 col-md-10 col-sm-10 col-xs-10"
+                     style="margin:0 auto;text-align:center;">
+                    <table id="nodeConfig" class="layui-table" style="width:100%"></table>
+                    <!--                    <div id="pageBar"></div>-->
+                </div>
+            </div>
+            <div style="height:45px;"></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="d-sm-flex justify-content-between align-items-center">
+                        <h4 class="header-title mb-0" style="font-family: Consolas;">MicroService Datas</h4>
+                        <div style="height:60px;"></div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div style="text-align: center;">
+                        <table id="example" class="layui-table" lay-size="xs" role="grid"
+                               aria-describedby="example_info">
+                            <thead>
+                            <tr class="t_head">
+                                <th>MircoService<i style="cursor:pointer;color:white;"
+                                                   class="fa fa-1x fa-arrow-down"></i></th>
+                                <th>Category<i style="cursor:pointer;color:white;" class="fa fa-1x fa-arrow-down"></i>
+                                </th>
+                                <th>Status<i style="cursor:pointer;color:white;" class="fa fa-1x fa-arrow-down"></i>
+                                </th>
+                                <th>TimeStamp<i style="cursor:pointer;color:white;"
+                                                class="fa fa-1x fa-arrow-down"></i></th>
+                                <th>Performance<i style="cursor:pointer;color:white;"
+                                                  class="fa fa-1x fa-arrow-down"></i></th>
+                                <th>Size<i style="cursor:pointer;color:white;" class="fa fa-1x fa-arrow-down"></i></th>
+                                <th>Comment<i style="cursor:pointer;color:white;" class="fa fa-1x fa-arrow-down"></i>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/piechart.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        var xx = [
+            {
+                MircoService: "A",
+                Category: "Languages",
+                Status: "Published",
+                TimeStamp: "2019-05-03",
+                Performance: "100%",
+                Size: "100",
+                Comment: "Very Good!",
+            },
+            {
+                MircoService: "A",
+                Category: "Languages",
+                Status: "Published",
+                TimeStamp: "2019-05-04",
+                Performance: "100%",
+                Size: "100",
+                Comment: "Very Good!",
+            },
+            {
+                MircoService: "B",
+                Category: "Languages",
+                Status: "Published",
+                TimeStamp: "2019-05-03",
+                Performance: "100%",
+                Size: "100",
+                Comment: "Very Good!",
+            },
+            {
+                MircoService: "B",
+                Category: "Languages",
+                Status: "Published",
+                TimeStamp: "2019-05-03",
+                Performance: "100%",
+                Size: "100",
+                Comment: "Very Good!",
+            },
+            {
+                MircoService: "C",
+                Category: "Languages",
+                Status: "Published",
+                TimeStamp: "2019-05-03",
+                Performance: "100%",
+                Size: "100",
+                Comment: "Very Good!",
+            },
+
+
+        ];
+
+
+        for (i = 0; i < xx.length; i++) {
+            var html = "<tr><td>" + xx[i].MircoService + "</td><td>" + xx[i].Category + "</td><td>" + xx[i].Status + "</td><td>" + xx[i].TimeStamp + "</td><td>" + xx[i].Performance + "</td><td>" + xx[i].Size + "</td><td>" + xx[i].Comment + "</td></tr>";
+            $("#example tbody").append(html);
+        }
+
+        $('#example').DataTable({
+            language: {
+                bAutoWidth: true,
+                emptyTable: 'No Data',
+                loadingRecords: 'Loading...',
+                processing: 'Query in progress...',
+                search: '<i class="fa fa-search"></i>',
+                lengthMenu: 'Page _MENU_ items',
+                zeroRecords: 'No Data',
+                paginate: {
+                    'first': 'First',
+                    'last': 'Last',
+                    'next': 'Next',
+                    'previous': 'Prev'
+                },
+                info: '<strong><strong>_PAGE_ / _PAGES_ Pages',
+                infoEmpty: 'No DATA',
+                infoFiltered: '(Total filter _MAX_ items)',
+            }
+        });
+        $(".buttons-copy").text('Copy');
+        $(".buttons-excel").text('Export to excel');
+        $(".buttons-pdf").text('Export to pdf');
+        $(".buttons-csv").text('Export to csv');
+        $(".buttons-print").text('Print');
+        $(".t_head th").on("click", function () {
+            var i = $(this).find("i");
+            if (i.hasClass("fa-arrow-down") == true) {
+                i.removeClass("fa-arrow-down");
+                i.addClass("fa-arrow-up");
+            } else {
+                i.removeClass("fa-arrow-up");
+                i.addClass("fa-arrow-down");
+            }
+        });
+        $("#example th:eq(3)").trigger("click").trigger("click");
+    });
+
+
+</script>
+<script type="text/javascript">
+    var enumData;
+    $.ajax({
+        async: false,
+        type: 'GET',
+        url: "/v1/data/json",
+        success: function (json) {
+            enumData = json;
+        },
+        dataType: "json"
+    });
+    var tagData = [{"name": "Python", "id": 64},
+        {"name": "Java", "id": 65},
+        {"name": "Ruby", "id": 5},
+        {"name": "Jenkins", "id": 6},
+        {"name": "Mysql", "id": 7},
+        {"name": "PHP", "id": 8},
+        {"name": "Go", "id": 10},
+        {"name": "Nginx", "id": 11},
+        {"name": "Postgrel", "id": 16}];
+    var tagData02 = [{"name": "Python", "id": 64},
+        {"name": "Java", "id": 65},
+        {"name": "Ruby", "id": 5},
+        {"name": "Jenkins", "id": 6},
+        {"name": "Mysql", "id": 7},
+        {"name": "PHP", "id": 8},
+        {"name": "Go", "id": 10},
+        {"name": "Nginx", "id": 11},
+        {"name": "Postgrel", "id": 16}];
+    //input name 为 fileIds
+    var html = '<div class="layui-form-item seb1">';
+    html += '<label class="layui-form-label">Selected:</label>';
+    html += '<div class="AD">';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="layui-form-item">';
+    html += '<label class="layui-form-label">Select</label>';
+    html += '<div class="layui-input-inline fileId layui-form-select layui-form-selected">';
+    html += '<input type="text" class="layui-input" placeholder="Choose 6 MicroService" autocomplete="off">';
+    html += '<dl style="display: none;"></dl>';
+    html += '</div>';
+    html += '</div>';
+    var html02 = '<div class="layui-form-item seb2">';
+    html02 += '<label class="layui-form-label">Selected:</label>';
+    html02 += '<div class="AD02">';
+    html02 += '</div>';
+    html02 += '</div>';
+    html02 += '<div class="layui-form-item">';
+    html02 += '<i data-toggle="collapse" data-target="#demo1" id="tswitch" style="float:left;margin-right:15px;cursor:pointer;color:#005bc2;" class="fa fa-arrow-circle-down fa-3x"></i>';
+    html02 += '<label class="layui-form-label">Select</label>';
+    html02 += '<div class="layui-input-inline fileId02 layui-form-select layui-form-selected">';
+    html02 += '<input type="text" class="layui-input" placeholder="Choose 5 MicroService" autocomplete="off">';
+    html02 += '<dl style="display: none;"></dl>';
+    html02 += '</div>';
+    html02 += '</div>';
+    $.myMethod("#getBarData1", tagData, "fileIds", html, ".AD", ".fileId", ".seb1")
+    $.myMethod("#getBarData2", tagData02, "fileIds", html02, ".AD02", ".fileId02", ".seb2")
+    $(".sumbit").on("click", function () {
+        if ($(".AD span").size() > 0 && $(".AD span").size() <= 6) {
+            var microStr = "";
+            var microArr = [];
+            $(".AD .label span").each(function (k, v) {
+                microStr += enumData[$(v).text().trim().toUpperCase()] + "0000";
+                microArr.push($(v).text().trim())
+            });
+            showOverlay();
+            reset_chart_Failed(microStr, microArr);
+            hideOverlay()
+        } else if ($(".AD span").size() > 6) {
+            $("#getBarData1 input").attr("placeholder", "Beyond maximum limit")
+        }
+    });
+
+    function reset_chart_Failed(micros, arr) {
+        $.ajax({
+            "Content-Type": "application/json",
+            async: false,
+            url: "/v1/data/count",
+            data: {"microservice": micros},
+            success: function (json) {
+                optionBar2.xAxis[0].data = arr;
+                optionBar2.series[0].data = json.passed;
+                optionBar2.series[1].data = json.failed;
+                myChartBar2.setOption(optionBar2)
+            },
+            dataType: "json"
+        });
+        $("#nodeConfig th").css({"background-color": "#5894d8", "color": "white"});
+    }
+
+    $("#tswitch").on("click", function () {
+        if ($("#tswitch").hasClass("fa-arrow-circle-down") == true) {
+            $("#tswitch").toggleClass("fa-arrow-circle-down");
+            $("#tswitch").toggleClass("fa-arrow-circle-up");
+        } else {
+            $("#tswitch").toggleClass("fa-arrow-circle-up");
+            $("#tswitch").toggleClass("fa-arrow-circle-down");
+        }
+    });
+
+    $(document).ready(function () {
+        var data;
+        $.ajax({
+            async: false,
+            type: 'GET',
+            url: "/v1/data/config",
+            data: {"microservice": 1000},
+            success: function (json) {
+                data = json;
+            },
+            dataType: "json"
+        });
+        var table = $('#nodeConfig').DataTable({
+            columns: data.columns,
+            data: data.rows,
+            language: {
+                bAutoWidth: true
+            }
+        });
+        $("#nodeConfig th").css({"background-color": "#5894d8", "color": "white"});
+        $("#nodeConfig_filter").remove();
+        $("#nodeConfig_wrapper label").remove();
+        $("#nodeConfig_info").remove();
+        $("#nodeConfig_paginate").remove();
+        $(".submit02").on("click", function () {
+            var sizeArr = $(".AD02 span").size();
+            if (sizeArr > 0 && sizeArr <= 5) {
+                var microArr = []; // 定义一个空数组
+                var microStr = "";
+                $(".AD02 span").each(function () {
+                    microArr.push($(this).text().trim());
+                    microStr += enumData[$(this).text().trim().toUpperCase()] + "0000";
+                });
+                showOverlay();
+                reset(microArr);
+                reset_chart(microStr, microArr);
+                hideOverlay();
+            } else if ($(".AD02 span").size() > 5) {
+                $("#getBarData2 input").attr("placeholder", "Beyond maximum limit")
+            }
+        });
+
+        function reset_chart(micros, arr) {
+            $.ajax({
+                "Content-Type": "application/json",
+                async: false,
+                url: "/v1/data/performance",
+                data: {"microservice": micros},
+                success: function (json) {
+                    option.xAxis[0].data = arr;
+                    option.series[0].data = [100, 100, 100, 100, 100]
+                    myChartBar.setOption(option);
+                },
+                dataType: "json"
+            });
+        }
+
+        function reset(micros) {
+            $.ajax({
+                "Content-Type": "application/json",
+                async: false,
+                url: "/v1/data/config",
+                data: {"microservices": micros},
+                success: function (json) {
+                    table.destroy();
+                    $('#nodeConfig').empty();
+                    table = $('#nodeConfig').DataTable({
+                        info: true,
+                        destroy: true,
+                        deferRender: true,
+                        columns: json.columns,
+                        data: json.rows
+                    });
+                },
+                dataType: "json"
+            });
+            $("#nodeConfig th").css({"background-color": "#5894d8", "color": "white"});
+            $("#nodeConfig_filter").remove();
+            $("#nodeConfig_wrapper label").remove();
+            $("#nodeConfig_info").remove();
+            $("#nodeConfig_paginate").remove();
+        }
+    });
+
+
+</script>
+{% endblock %}

@@ -17,7 +17,7 @@
     <!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">-->
     <!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}">-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/loaders.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/combo.select.css') }}">
+{#    <link rel="stylesheet" href="{{ url_for('static', filename='css/combo.select.css') }}">#}
     <!-- amchart css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/export.css') }}" type="text/css" media="all"/>
     <!-- others css -->
@@ -27,16 +27,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/layui.css') }}"/>
     <link href="{{ url_for('static', filename='css/layui.css') }}" type="text/css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.datatables.min.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.dataTables.min.css') }}"/>
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
     <script src="{{ url_for('static', filename='js/jquery-2.2.4.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.combo.select.js') }}"></script>
+{#    <script src="{{ url_for('static', filename='js/jquery.combo.select.js') }}"></script>#}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
     <script src="{{ url_for('static', filename='js/waitModal.js') }}"></script>
     <script src="{{ url_for('static', filename='js/MySearch.js') }}" type="text/javascript" charset="utf-8"></script>
     <style>
-    .dowebok { width: 400px; margin: 30px auto 0;}
-    .result { text-align: center; color: #f50;}
+    option{
+        text-align: center;
+    }
     #example td {background-color: #d0f2fd;color:black;font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace}
     #nodeConfig td {background-color: #d0f2fd;color:black;font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace}
     td{font-size:16px !important}

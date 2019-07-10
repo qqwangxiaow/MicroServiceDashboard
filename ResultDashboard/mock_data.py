@@ -12,8 +12,8 @@ with app.app_context():
     with db.auto_commit():
         for i in range(100):
             obj = MicroSizeData()
-            obj.micro_code = 1000
-            obj.OS = "CentOS"
+            obj.micro_code = 1001
+            obj.OS = "ClearLinux"
             obj.size = float("33.{}".format(i))
             obj.version = "v1.0.{}".format(i)
             obj.catalog = "Language"

@@ -109,6 +109,7 @@
                         $.each(json.sizeData,function(index,value){
                             option_size.series[index].data=value;
                         });
+                        option_size.xAxis[0].data=json.round;
                         lineChart_size.setOption(option_size);
                         reset(json);
                         $("#example th:eq(4)").trigger("click").trigger("click");

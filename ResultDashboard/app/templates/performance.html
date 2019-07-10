@@ -1,51 +1,39 @@
 {% extends "base.html" %}
 {% block title %}
-<title>Intel MicroService Dashboard -- Performance</title>
+    <title>Intel MicroService Dashboard -- Performance</title>
 
 {% endblock %}
 {% block webtitle %}
-<h4 class="page-title pull-left">Performance</h4>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/build.css') }}">
+    <h4 class="page-title pull-left">Performance</h4>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/build.css') }}">
 {% endblock %}
 {% block subTitle %}
-<li><span>Performance</span></li>
+    <li><span>Performance</span></li>
 {% endblock %}
 {% block maincontent %}
-<!-- bootstrap -->
+    <!-- bootstrap -->
 
-<!-- bootstrap-select -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-<div style="height:30px;background-color:white;"></div>
-<div class="main-content-inner" style="background-color:white;">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color:white;text-align:center">
-        <div class="col-lg-6 col-md-9 col-sm-12 col-xs-12" style="margin:0 auto;">
-            <div class="input-group" style="margin: 0 auto">
-                <input id="SearchInput" type="text" class="form-control" placeholder="Search by MicroService name">
-                <span class="input-group-btn">
+    <!-- bootstrap-select -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <div style="height:30px;background-color:white;"></div>
+    <div class="main-content-inner" style="background-color:white;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color:white;text-align:center">
+            <div class="col-lg-6 col-md-9 col-sm-12 col-xs-12" style="margin:0 auto;">
+                <div class="input-group" style="margin: 0 auto">
+                    <input id="SearchInput" type="text" class="form-control" placeholder="Search by MicroService name">
+                    <span class="input-group-btn">
                         <button id="resetTable" class="btn btn-default" style="background-color:#005bc2;color:white;"
                                 type="button">Go!</button>
                     </span>
-            </div><!-- /input-group -->
-            <div>
-                <span>KPI&nbsp;&nbsp;&nbsp;</span>
-                <div class="dowebok" style="display:inline-block;">
-                    <select>
-                        <option value="">MicroService</option>
+                </div><!-- /input-group -->
+                <div style="margin-top: 30px;">
+                    <h4 style="display: inline-block;position: absolute;margin-top: 7px;">KPI CHOOSE</h4>
+                                <select class="singleSelect " style="width: 250px;padding: 0 2%;">           
+                    <option selected="selected" value="pybenchhmark minimum">pybenchhmark minimum</option>
+                    <option value="pybenchhmark Average">pybenchhmark Average</option>
+                                </select>
 
-                        <optgroup label="Python">
-                            <option value="深圳">pybenchhmark minimum (ms)</option>
-                            <option value="广州">pybenchmark average (ms)</option>
-                        </optgroup>
-
-                        <optgroup label="Memcached">
-                            <option value="长沙">Sets - Latency</option>
-                            <option value="株洲">Sets - KB/sec</option>
-                            <option value="岳阳">Gets - Latency</option>
-                            <option value="张家界">Gets - KB/sec</option>
-                            <option value="张家界">Total - Latency</option>
-                            <option value="张家界">Total - LKB/sec</option>
-                        </optgroup>
-                    </select>
+                            
                 </div>
             </div>
 
@@ -80,120 +68,125 @@
             </table>
         </div>
     </div>
-</div>
-<script src="{{ url_for('static', filename='js/linechartperformance.js') }}"></script>
-<script>
-    $(document).ready(function () {
-    $('select').comboSelect();
-        var enumData;
-        var data;
-        $.ajax({
-            async: false,
-            type: 'GET',
-            url: "/v1/data/json",
-            success: function (json) {
-                enumData = json;
-            },
-            dataType: "json"
-        });
-        $.ajax({
-            async: false,
-            type: 'GET',
-            url: "/v1/data/size",
-            data: {"microservice": 1001},
-            success: function (json) {
-                data = json;
-            },
-            dataType: "json"
-        });
-        var table = $('#example').DataTable({
-            paging: true,
-            lengthChange: true,
-            columns: data.columns,
-            data: data.rows,
-            language: {
-                bAutoWidth: true,
-                emptyTable: 'No Data',
-                loadingRecords: 'Loading...',
-                processing: 'Query in progress...',
-                search: '<i class="fa fa-search"></i>',
-                lengthMenu: 'Page _MENU_ items',
-                zeroRecords: 'No Data',
-                paginate: {
-                    'first': 'First',
-                    'last': 'Last',
-                    'next': 'Next',
-                    'previous': 'Prev'
+    </div>
+    <script src="{{ url_for('static', filename='js/linechartperformance.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.singleSelect').select2();
+            var enumData;
+            var data;
+            var kpis;
+            $.ajax({
+                async: false,
+                type: 'GET',
+                url: "/v1/data/json",
+                success: function (json) {
+                    enumData = json;
                 },
-                info: '<strong><strong>_PAGE_ / _PAGES_ Pages&nbsp;&nbsp;&nbsp;&nbsp;',
-                infoEmpty: 'No DATA',
-                infoFiltered: '(Total filter _MAX_ items)'
-            },
-        });
-        $("[aria-controls='example']").attr("placeholder", "  filter data");
-        $("#resetTable").on('click', function () {
-            var micro = $("#SearchInput").val().trim().toUpperCase()
-            if (micro && enumData.hasOwnProperty(micro)) {
-                showOverlay();
-                $.ajax({
-                    "Content-Type": "application/json",
-                    async: false,
-                    url: "/v1/data/size",
-                    data: {microservice: enumData[micro]},
-                    success: function (json) {
-                        $.each(json.sizeData,function(index,value){
-                            option_performance.series[index].data=value;
-                        });
-                        lineChart_performance.setOption(option_performance);
-                        reset(json);
-                        $("#example th:eq(4)").trigger("click").trigger("click");
-                        hideOverlay();
-                    }
+                dataType: "json"
+            });
+            $.ajax({
+                async: false,
+                type: 'GET',
+                url: "/v1/data/size",
+                data: {"microservice": 1001},
+                success: function (json) {
+                    data = json;
+                },
+                dataType: "json"
+            });
+            var table = $('#example').DataTable({
+                paging: true,
+                lengthChange: true,
+                columns: data.columns,
+                data: data.rows,
+                language: {
+                    bAutoWidth: true,
+                    emptyTable: 'No Data',
+                    loadingRecords: 'Loading...',
+                    processing: 'Query in progress...',
+                    search: '<i class="fa fa-search"></i>',
+                    lengthMenu: 'Page _MENU_ items',
+                    zeroRecords: 'No Data',
+                    paginate: {
+                        'first': 'First',
+                        'last': 'Last',
+                        'next': 'Next',
+                        'previous': 'Prev'
+                    },
+                    info: '<strong><strong>_PAGE_ / _PAGES_ Pages&nbsp;&nbsp;&nbsp;&nbsp;',
+                    infoEmpty: 'No DATA',
+                    infoFiltered: '(Total filter _MAX_ items)'
+                },
+            });
+            $("[aria-controls='example']").attr("placeholder", "  filter data");
+            $("#resetTable").on('click', function () {
+                var micro = $("#SearchInput").val().trim().toUpperCase();
+                if (micro && enumData.hasOwnProperty(micro)) {
+                    showOverlay();
+                    $.ajax({
+                        "Content-Type": "application/json",
+                        async: false,
+                        url: "/v1/data/size",
+                        data: {microservice: enumData[micro]},
+                        success: function (json) {
+                            $.each(json.sizeData, function (index, value) {
+                                option_performance.series[index].data = value;
+                            });
+                            option_performance.xAxis[0].data = json.round;
+                            lineChart_performance.setOption(option_performance);
+                            kpis = json.kpis;
+                            $(".singleSelect").empty();
+                            for (var key in kpis) {
+                                var str_temp = "<option value=" + '+key+' + ">" + key + "</option>";
+                                $(".singleSelect").append(str_temp);
+                            }
+                            $(".singleSelect").trigger('change');
+                            reset(json);
+                            $("#example th:eq(4)").trigger("click").trigger("click");
+                            hideOverlay();
+                        }
+                    });
+                } else {
+                    $("#SearchInput").val("");
+                    $("#SearchInput").attr("placeholder", "Invalid MicroService Name")
+                }
+            });
+
+            function reset(json) {
+                table.destroy();
+                $('#example').empty();
+                table = $('#example').DataTable({
+                    bAutoWidth: true,//自动宽度
+                    paging: true,
+                    lengthChange: true,
+                    info: true,
+                    destroy: true,
+                    deferRender: true,
+                    columns: json.columns,
+                    data: json.rows,
+                    language: {
+                        emptyTable: 'No Data',
+                        loadingRecords: 'Loading...',
+                        processing: 'Query in progress...',
+                        search: '<i class="fa fa-search"></i>',
+                        lengthMenu: 'Page _MENU_ items',
+                        zeroRecords: 'No Data',
+                        paginate: {
+                            'first': 'First',
+                            'last': 'Last',
+                            'next': 'Next',
+                            'previous': 'Prev'
+                        },
+                        info: '<strong><strong>_PAGE_ / _PAGES_ Pages',
+                        infoEmpty: 'No DATA',
+                        infoFiltered: '(Total filter _MAX_ items)',
+                    },
                 });
-            } else {
-                $("#SearchInput").val("");
-                $("#SearchInput").attr("placeholder", "Invalid MicroService Name")
+                $("[aria-controls='example']").attr("placeholder", "filter by column value")
             }
         });
 
-        function reset(json){
-                                    table.destroy();
-                                    $('#example').empty();
-                                    table = $('#example').DataTable( {
-                                                                    bAutoWidth: true,//自动宽度
-                                                                    paging: true,
-                                                                    lengthChange: true,
-                                                                    info: true,
-                                                                    destroy: true,
-                                                                    deferRender: true,
-                                                                    columns: json.columns,
-                                                                    data:    json.rows,
-                                                                    language: {
-			                                                                    emptyTable: 'No Data',
-			                                                                    loadingRecords: 'Loading...',
-			                                                                    processing: 'Query in progress...',
-			                                                                    search: '<i class="fa fa-search"></i>',
-			                                                                    lengthMenu: 'Page _MENU_ items',
-			                                                                    zeroRecords: 'No Data',
-			                                                                    paginate: {
-			                                                                    	'first':      'First',
-			                                                                    	'last':       'Last',
-			                                                                    	'next':       'Next',
-			                                                                    	'previous':   'Prev'
-			                                                                    },
-			                                                                    info: '<strong><strong>_PAGE_ / _PAGES_ Pages',
-			                                                                    infoEmpty: 'No DATA',
-			                                                                    infoFiltered: '(Total filter _MAX_ items)',
-		                                                                       },
-                                    });
-                                    $("[aria-controls='example']").attr("placeholder","filter by column value")
-        }
-    });
 
-
-
-
-
-
-</script>
+    </script>
 {% endblock %}

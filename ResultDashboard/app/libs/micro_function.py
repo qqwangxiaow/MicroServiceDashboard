@@ -5,6 +5,8 @@
 from app.libs.error_code import MicroServiceNotFoundError, ServerError
 from app.models.data import MicroSizeData
 from app.libs.enums import MicroServiceEnum
+from flask import current_app as app
+import app.libs.kpi as KPI
 import pandas as pd
 
 
@@ -33,12 +35,34 @@ def get_size(micro_code):
     else:
         size_df = pd.DataFrame([micro.to_dict() for micro in micro_size])
         size_df['MicroService'] = micro
-        clear = size_df[size_df['OS'] == 'ClearLinux'].sort_values('publish_date', ascending=False).iloc[0:7][
-            'size'].tolist()
-        ubnutu = size_df[size_df['OS'] == 'Ubuntu'].sort_values('publish_date', ascending=False).iloc[0:7][
-            'size'].tolist()
-        centos = size_df[size_df['OS'] == 'CentOS'].sort_values('publish_date', ascending=False).iloc[0:7][
-            'size'].tolist()
+        clear = size_df[size_df['OS'] == 'ClearLinux']
+        Ubuntu = size_df[size_df['OS'] == 'Ubuntu']
+        CentOS = size_df[size_df['OS'] == 'CentOS']
+        default_clear = \
+            clear[clear['docker_type'] == 'Default Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'size'].tolist()
+        default_ubnutu = \
+            Ubuntu[Ubuntu['docker_type'] == 'Default Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'size'].tolist()
+        default_centos = \
+            CentOS[CentOS['docker_type'] == 'Default Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'size'].tolist()
+        clear_clear = \
+            clear[clear['docker_type'] == 'Clear Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'size'].tolist()
+        clear_ubnutu = \
+            Ubuntu[Ubuntu['docker_type'] == 'Clear Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'size'].tolist()
+        clear_centos = \
+            CentOS[CentOS['docker_type'] == 'Clear Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'size'].tolist()
+
         columns = [
             {'title': 'DockerType'},
             {"title": 'MicroService'},
@@ -50,9 +74,12 @@ def get_size(micro_code):
         rows = [[*(list(row))] for _, row in
                 size_df[['docker_type', 'MicroService', 'catalog', 'size', 'publish_date', 'version']].iterrows()]
         data = {
-            "sizeData": [clear, ubnutu, centos],
+            "sizeData": [default_clear, default_ubnutu, default_centos, clear_clear, clear_ubnutu, clear_centos],
             "columns": columns,
-            "rows": rows
+            "rows": rows,
+            "round": list(range(1, app.config['SIZE_ROUND'] + 1)),
+            "kpis": getattr(KPI,micro),
+            "micro": micro,
         }
     return data
 

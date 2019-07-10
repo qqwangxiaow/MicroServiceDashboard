@@ -30,20 +30,20 @@ option_performance = {
                 optionToContent: function (opt) {
                     let axisData = opt.xAxis[0].data; //坐标数据
                     let series = opt.series; //折线图数据
-                    let tdHeads = '<td  style="padding: 0 10px;width:20%;">Time</td>'; //表头
+                    let tdHeads = '<td  style="padding: 0 10px;width:13%;">Time</td>'; //表头
                     let tdBodys = ''; //数据
                     series.forEach(function (item) {
                         //组装表头
-                        tdHeads += `<td style="padding: 0 10px;width:20%;">${item.name}</td>`;
+                        tdHeads += `<td style="padding: 0 10px;width:13%;">${item.name}</td>`;
                     });
 
                     let table = "<div class='col-lg-12 col-md-12 col-xs-12'>" + `<table border="1" class="t_head" style="margin:0 auto;border-collapse:collapse;font-size:16px;text-align:center"><tbody><tr style="background-color:#5894d8;color:white;height:22px;">${tdHeads} </tr>`;
                     for (let i = 0, l = axisData.length; i < l; i++) {
                         for (let j = 0; j < series.length; j++) {
                             //组装表数据
-                            tdBodys += `<td style="width:20%;">${series[j].data[i]}</td>`;
+                            tdBodys += `<td style="width:13%;">${series[j].data[i]}</td>`;
                         }
-                        table += `<tr><td style="padding: 0 10px;width:20%;">${axisData[i]}</td>${tdBodys}</tr>`;
+                        table += `<tr><td style="padding: 0 10px;width:13%;">${axisData[i]}</td>${tdBodys}</tr>`;
                         tdBodys = '';
                     }
                     table += '</tbody></table>';

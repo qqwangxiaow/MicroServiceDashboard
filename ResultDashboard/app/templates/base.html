@@ -12,16 +12,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
-<!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/themify-icons.css') }}">-->
+    <!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/themify-icons.css') }}">-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/metisMenu.css') }}">
-<!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">-->
-<!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}">-->
+    <!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">-->
+    <!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}">-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/loaders.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/combo.select.css') }}">
     <!-- amchart css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/export.css') }}" type="text/css" media="all"/>
     <!-- others css -->
-<!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/typography.css') }}">-->
-<!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/default-css.css') }}">-->
+    <!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/typography.css') }}">-->
+    <!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/default-css.css') }}">-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/layui.css') }}"/>
@@ -30,9 +31,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.dataTables.min.css') }}"/>
     </style>
     <script src="{{ url_for('static', filename='js/jquery-2.2.4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.combo.select.js') }}"></script>
     <script src="{{ url_for('static', filename='js/waitModal.js') }}"></script>
     <script src="{{ url_for('static', filename='js/MySearch.js') }}" type="text/javascript" charset="utf-8"></script>
     <style>
+    .dowebok { width: 400px; margin: 30px auto 0;}
+    .result { text-align: center; color: #f50;}
     #example td {background-color: #d0f2fd;color:black;font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace}
     #nodeConfig td {background-color: #d0f2fd;color:black;font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace}
     td{font-size:16px !important}
@@ -177,7 +181,8 @@
         <div class="sidebar-header">
             <div class="logo">
                 <a href="/index"><i style="color:white;" class="fa fa-asl-interpreting fa-4x" aria-hidden="true"></i><i
-                        style="color:white;display:inline-block;margin-left:60px;" class="fa fa-1g" aria-hidden="true"></i></a>
+                        style="color:white;display:inline-block;margin-left:60px;" class="fa fa-1g"
+                        aria-hidden="true"></i></a>
             </div>
         </div>
         <div class="main-menu">
@@ -235,11 +240,11 @@
             <div class="row align-items-center">
                 <!-- nav and search button -->
                 <div class="col-md-6 col-sm-8 clearfix">
-                                        <div class="nav-btn pull-left">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </div>
+                    <div class="nav-btn pull-left">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                     <div class="search-box pull-left">
                         <form action="#">
                             <input type="text" name="search" placeholder="Search..." required>
@@ -641,16 +646,15 @@
     <script src="{{ url_for('static', filename='js/jquery.slimscroll.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.slicknav.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
-<!--    <script type="text/javascript" src="{{ url_for('static', filename='js/layui.js') }}"></script>-->
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <!--    <script type="text/javascript" src="{{ url_for('static', filename='js/layui.js') }}"></script>-->
     <script src="{{ url_for('static', filename='js/jquery.datatables.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dataTables.buttons.min.js') }}"></script>
-<!--    <script src="{{ url_for('static', filename='js/jszip.min.js') }}"></script>-->
-<!--    <script src="{{ url_for('static', filename='js/buttons.html5.min.js') }}"></script>-->
-<!--    <script src="{{ url_for('static', filename='js/buttons.flash.min.js') }}"></script>-->
-<!--    <script src="{{ url_for('static', filename='js/pdfmake.min.js') }}"></script>-->
-<!--    <script src="{{ url_for('static', filename='js/vfs_fonts.js') }}"></script>-->
-<!--    <script src="{{ url_for('static', filename='js/buttons.print.min.js') }}"></script>-->
+    <!--    <script src="{{ url_for('static', filename='js/jszip.min.js') }}"></script>-->
+    <!--    <script src="{{ url_for('static', filename='js/buttons.html5.min.js') }}"></script>-->
+    <!--    <script src="{{ url_for('static', filename='js/buttons.flash.min.js') }}"></script>-->
+    <!--    <script src="{{ url_for('static', filename='js/pdfmake.min.js') }}"></script>-->
+    <!--    <script src="{{ url_for('static', filename='js/vfs_fonts.js') }}"></script>-->
+    <!--    <script src="{{ url_for('static', filename='js/buttons.print.min.js') }}"></script>-->
 </div>
 </body>
 

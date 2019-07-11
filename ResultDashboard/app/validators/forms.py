@@ -58,7 +58,6 @@ class UserEmailForm(ClientForm):
 
 class DataForm(BaseForm):
     microservice = IntegerField(validators=[DataRequired(message='can\'t be null')])
-
     def validate_microservice(self, value):
         try:
             if value.data.endswith("0000"):
@@ -68,6 +67,17 @@ class DataForm(BaseForm):
         except Exception as e:
             raise MicroServiceNotFoundError(str(e))
         self.microservice.data = code
+
+class PerformanceForm(BaseForm):
+    microservice = IntegerField(validators=[DataRequired(message='can\'t be null')])
+    kpi = StringField()
+    def validate_microservice(self, value):
+        self.microservice.data = value.data
+
+    def validate_kpi(self,value):
+        self.kpi.data = value.data
+
+
 
 
 class ConfigDataForm(BaseForm):

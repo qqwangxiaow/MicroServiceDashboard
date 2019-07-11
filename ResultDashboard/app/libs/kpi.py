@@ -1,6 +1,6 @@
 PYTHON = {
-    'pybenchhmark minimum': 'ms',
-    'pybenchmark average': 'ms',
+    'pybenchmark minimum': 'ms',
+    'pybenchmark Average': 'ms',
 }
 MEMCACHED = {
     'Sets - Latency':'',

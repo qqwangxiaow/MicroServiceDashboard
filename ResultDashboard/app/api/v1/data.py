@@ -8,7 +8,7 @@ from app.libs.promise import promise
 from app.libs.redprint import Redprint
 from app.libs.micro_function import get_config_data as get_config, get_size, get_performance, get_count
 from app.libs.token_auth import auth
-from app.validators.forms import DataForm, ConfigDataForm
+from app.validators.forms import DataForm, ConfigDataForm,PerformanceForm
 from app.libs.enums import MicroServiceEnum
 
 api = Redprint('data')
@@ -57,11 +57,11 @@ def delete_micro_size():
     pass
 
 
-@api.route('/performance', methods=['GET'])
+@api.route('/performance', methods=['GET','POST'])
 def get_micro_performance():
-    form = DataForm().validate_for_api()
-    micro_sizes = get_performance(form.microservice.data)
-    return jsonify(micro_sizes)
+    form = PerformanceForm().validate_for_api()
+    micro_pf = get_performance(form.microservice.data,form.kpi.data)
+    return jsonify(micro_pf)
 
 
 @api.route('/performance', methods=['DELETE'])

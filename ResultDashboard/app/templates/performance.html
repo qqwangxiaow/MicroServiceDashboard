@@ -29,8 +29,8 @@
                 <div style="margin-top: 30px;">
                     <h4 style="display: inline-block;position: absolute;margin-top: 7px;">KPI CHOOSE</h4>
                                 <select class="singleSelect " style="width: 250px;padding: 0 2%;">           
-                    <option selected="selected" value="pybenchhmark minimum">pybenchhmark minimum</option>
-                    <option value="pybenchhmark Average">pybenchhmark Average</option>
+                    <option selected="selected" value="pybenchmark minimum">pybenchmark minimum</option>
+                    <option value="pybenchmark Average">pybenchmark Average</option>
                                 </select>
 
                             
@@ -76,6 +76,7 @@
             var enumData;
             var data;
             var kpis;
+            var current='PYTHON';
             $.ajax({
                 async: false,
                 type: 'GET',
@@ -88,8 +89,8 @@
             $.ajax({
                 async: false,
                 type: 'GET',
-                url: "/v1/data/size",
-                data: {"microservice": 1001},
+                url: "/v1/data/performance",
+                data: {"microservice": 1001,"kpi":"default",},
                 success: function (json) {
                     data = json;
                 },
@@ -127,18 +128,20 @@
                     $.ajax({
                         "Content-Type": "application/json",
                         async: false,
-                        url: "/v1/data/size",
-                        data: {microservice: enumData[micro]},
+                        url: "/v1/data/performance",
+                        data: {microservice: enumData[micro],kpi:$(".singleSelect option:checked").text()},
                         success: function (json) {
-                            $.each(json.sizeData, function (index, value) {
+                            current = enumData[micro];
+                            $.each(json.pfData, function (index, value) {
                                 option_performance.series[index].data = value;
                             });
                             option_performance.xAxis[0].data = json.round;
+                             option_performance.yAxis[0].axisLabel.formatter = '{value} '+json.units;
                             lineChart_performance.setOption(option_performance);
                             kpis = json.kpis;
                             $(".singleSelect").empty();
-                            for (var key in kpis) {
-                                var str_temp = "<option value=" + '+key+' + ">" + key + "</option>";
+                            for (var key=0;key<kpis.length;key++) {
+                                var str_temp = "<option value="+kpis[key]+">" + kpis[key] + "</option>";
                                 $(".singleSelect").append(str_temp);
                             }
                             $(".singleSelect").trigger('change');
@@ -152,7 +155,27 @@
                     $("#SearchInput").attr("placeholder", "Invalid MicroService Name")
                 }
             });
+            $('.singleSelect').on('change',function (e) {
+               showOverlay();
+                    $.ajax({
+                        "Content-Type": "application/json",
+                        async: false,
+                        url: "/v1/data/performance",
+                        data: {microservice: enumData[current],kpi:$(".singleSelect option:checked").text()},
+                        success: function (json) {
 
+                            $.each(json.pfData, function (index, value) {
+                                option_performance.series[index].data = value;
+                            });
+                            option_performance.xAxis[0].data = json.round;
+                             option_performance.yAxis[0].axisLabel.formatter = '{value} '+json.units;
+                            lineChart_performance.setOption(option_performance);
+                            {#reset(json);#}
+                            {#$("#example th:eq(4)").trigger("click").trigger("click");#}
+                            hideOverlay();
+                        }
+                    });
+            });
             function reset(json) {
                 table.destroy();
                 $('#example').empty();

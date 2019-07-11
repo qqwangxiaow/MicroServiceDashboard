@@ -3,7 +3,7 @@
 # Email   : hualoux.xia@intel.com
 # Create timeTime    : 5/29/19 9:34 PM
 from app.libs.error_code import MicroServiceNotFoundError, ServerError
-from app.models.data import MicroSizeData
+from app.models.data import MicroSizeData,MicroPerformance
 from app.libs.enums import MicroServiceEnum
 from flask import current_app as app
 import app.libs.kpi as KPI
@@ -78,18 +78,76 @@ def get_size(micro_code):
             "columns": columns,
             "rows": rows,
             "round": list(range(1, app.config['SIZE_ROUND'] + 1)),
-            "kpis": getattr(KPI,micro),
+            "kpis": getattr(KPI, micro),
             "micro": micro,
         }
     return data
 
 
-def get_performance(micro_code):
-    j = {
-        'performanceData': [[200, 200, 100, 400, 500, 600, 700], [300, 200, 400, 200, 300, 200, 100],
-                            [500, 510, 300, 200, 300, 400, 500]]
-    }
-    return j
+def get_performance(micro_code, kpi):
+    try:
+        micro = MicroServiceEnum(int(micro_code)).name
+        kpi_define = getattr(KPI, micro)
+        if kpi == "default":
+            kpi = list(kpi_define.keys())[0]
+        units = kpi_define[kpi]
+        filters = {
+            MicroPerformance.micro_code == micro_code,
+            MicroPerformance.kpi == kpi,
+        }
+        micros = MicroPerformance.query.filter(*filters).all()
+    except Exception as e:
+        raise ServerError(e)
+    else:
+        performance_df = pd.DataFrame([micro.to_dict() for micro in micros])
+        performance_df['MicroService'] = micro
+        clear = performance_df[performance_df['OS'] == 'ClearLinux']
+        Ubuntu = performance_df[performance_df['OS'] == 'Ubuntu']
+        CentOS = performance_df[performance_df['OS'] == 'CentOS']
+        default_clear = \
+            clear[clear['docker_type'] == 'Default Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        default_ubnutu = \
+            Ubuntu[Ubuntu['docker_type'] == 'Default Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        default_centos = \
+            CentOS[CentOS['docker_type'] == 'Default Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        clear_clear = \
+            clear[clear['docker_type'] == 'Clear Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        clear_ubnutu = \
+            Ubuntu[Ubuntu['docker_type'] == 'Clear Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        clear_centos = \
+            CentOS[CentOS['docker_type'] == 'Clear Docker'].sort_values('publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        columns = [
+            {'title': 'DockerType'},
+            {"title": 'MicroService'},
+            {"title": "Catalog"},
+            {"title": kpi+'{}'.format(units)},
+            {"title": "PublishDate"},
+            {"title": "Version"},
+        ]
+        rows = [[*(list(row))] for _, row in
+                performance_df[['docker_type', 'MicroService', 'catalog','data','publish_date', 'version']].iterrows()]
+        data = {
+            "pfData": [default_clear, default_ubnutu, default_centos, clear_clear, clear_ubnutu, clear_centos],
+            "columns": columns,
+            "rows": rows,
+            "round": list(range(1, app.config['SIZE_ROUND'] + 1)),
+            "micro": micro,
+            "kpis":list(kpi_define.keys()),
+            "units": units
+        }
+        return data
 
 
 def get_httpd():

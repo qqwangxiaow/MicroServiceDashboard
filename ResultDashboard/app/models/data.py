@@ -18,6 +18,16 @@ class MicroSizeData(BaseData):
     OS = Column(Enum("ClearLinux", 'Ubuntu', 'CentOS'))
     publish_date = Column(DateTime, default=datetime.now())
 
+class MicroPerformance(BaseData):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    docker_type = Column(String(64), nullable=False)
+    micro_code = Column(SmallInteger, nullable=False)
+    version = Column(String(64), nullable=False)
+    catalog = Column(String(64))
+    OS = Column(Enum("ClearLinux", 'Ubuntu', 'CentOS'))
+    publish_date = Column(DateTime, default=datetime.now())
+    data = Column(Float(),nullable=False)
+    kpi = Column(String(64), nullable=False)
 
 class HostConfig(BaseData):
     id = Column(Integer, primary_key=True, autoincrement=True)

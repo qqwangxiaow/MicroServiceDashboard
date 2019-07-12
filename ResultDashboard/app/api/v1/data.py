@@ -6,12 +6,15 @@ from flask import jsonify, request
 from app.cache import cache
 from app.libs.promise import promise
 from app.libs.redprint import Redprint
-from app.libs.micro_function import get_config_data as get_config, get_size, get_performance, get_count
+from app.libs.micro_function import get_config_data as get_config, get_size, get_performance, get_count, \
+    store_performance
+from app.libs.error_code import Success
 from app.libs.token_auth import auth
-from app.validators.forms import DataForm, ConfigDataForm,PerformanceForm
+from app.validators.forms import DataForm, ConfigDataForm, PerformanceForm, StorePerformance
 from app.libs.enums import MicroServiceEnum
 
 api = Redprint('data')
+
 
 @api.route('/config', methods=["GET"])
 def get_config_data():
@@ -57,11 +60,19 @@ def delete_micro_size():
     pass
 
 
-@api.route('/performance', methods=['GET','POST'])
+@api.route('/performance', methods=['GET'])
 def get_micro_performance():
     form = PerformanceForm().validate_for_api()
-    micro_pf = get_performance(form.microservice.data,form.kpi.data)
+    micro_pf = get_performance(form.microservice.data, form.kpi.data)
     return jsonify(micro_pf)
+
+
+@api.route('/performance', methods=['POST'])
+def store_micro_performance():
+    form = StorePerformance().validate_for_api()
+    _d = {key: getattr(form, key).data for key in form.to_dict()}
+    store_performance(_d)
+    return Success()
 
 
 @api.route('/performance', methods=['DELETE'])

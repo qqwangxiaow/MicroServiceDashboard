@@ -3,9 +3,10 @@
 # Email   : hualoux.xia@intel.com
 # Create timeTime    : 5/29/19 9:34 PM
 from app.libs.error_code import MicroServiceNotFoundError, ServerError
-from app.models.data import MicroSizeData,MicroPerformance
+from app.models.data import MicroSizeData, MicroPerformance
 from app.libs.enums import MicroServiceEnum
 from flask import current_app as app
+from app.models import db
 import app.libs.kpi as KPI
 import pandas as pd
 
@@ -132,22 +133,33 @@ def get_performance(micro_code, kpi):
             {'title': 'DockerType'},
             {"title": 'MicroService'},
             {"title": "Catalog"},
-            {"title": kpi+'{}'.format(units)},
+            {"title": '{}({})'.format(kpi, units)},
             {"title": "PublishDate"},
             {"title": "Version"},
         ]
         rows = [[*(list(row))] for _, row in
-                performance_df[['docker_type', 'MicroService', 'catalog','data','publish_date', 'version']].iterrows()]
+                performance_df[
+                    ['docker_type', 'MicroService', 'catalog', 'data', 'publish_date', 'version']].iterrows()]
         data = {
             "pfData": [default_clear, default_ubnutu, default_centos, clear_clear, clear_ubnutu, clear_centos],
             "columns": columns,
             "rows": rows,
             "round": list(range(1, app.config['SIZE_ROUND'] + 1)),
             "micro": micro,
-            "kpis":list(kpi_define.keys()),
+            "kpis": list(kpi_define.keys()),
             "units": units
         }
         return data
+
+
+def store_performance(data):
+    with db.auto_commit():
+        performance = MicroPerformance()
+        try:
+            [setattr(performance, key, data[key]) for key in data.keys()]
+            db.session.add(performance)
+        except Exception as e:
+            raise ServerError(e)
 
 
 def get_httpd():

@@ -3,12 +3,13 @@
 # Email   : hualoux.xia@intel.com
 # Create timeTime    : 5/23/19 12:48 AM
 
-from wtforms import StringField, IntegerField, FieldList, Field
+from wtforms import StringField, IntegerField, FieldList, Field, DateTimeField, FloatField
 from wtforms.validators import DataRequired, Length, Email, Regexp, length, ValidationError
 from app.libs.enums import ClientTypeEnum, MicroServiceEnum
-from app.models import User
+from app.models import User, MicroPerformance
 from app.validators.base import BaseForm
 from app.libs.error_code import MicroServiceNotFoundError
+import datetime
 
 
 class ListField(Field):
@@ -58,6 +59,7 @@ class UserEmailForm(ClientForm):
 
 class DataForm(BaseForm):
     microservice = IntegerField(validators=[DataRequired(message='can\'t be null')])
+
     def validate_microservice(self, value):
         try:
             if value.data.endswith("0000"):
@@ -68,16 +70,57 @@ class DataForm(BaseForm):
             raise MicroServiceNotFoundError(str(e))
         self.microservice.data = code
 
+
 class PerformanceForm(BaseForm):
     microservice = IntegerField(validators=[DataRequired(message='can\'t be null')])
     kpi = StringField()
+
     def validate_microservice(self, value):
         self.microservice.data = value.data
 
-    def validate_kpi(self,value):
+    def validate_kpi(self, value):
         self.kpi.data = value.data
 
 
+class StorePerformance(BaseForm):
+    __column__ = ('publish_date', 'catalog', 'version', 'micro_code', 'docker_type', 'data', 'kpi', 'OS')
+    docker_type = StringField(validators=[DataRequired(message='can\'t be null')])
+    micro_code = IntegerField(validators=[DataRequired(message='can\'t be null')])
+
+    version = StringField(validators=[DataRequired(message='can\'t be null')])
+    catalog = StringField(validators=[DataRequired(message='can\'t be null')])
+    OS = StringField(validators=[DataRequired(message='can\'t be null')])
+    publish_date = DateTimeField(default=datetime.datetime.now())
+    data = FloatField(validators=[DataRequired(message='can\'t be null')])
+    kpi = StringField(validators=[DataRequired(message='can\'t be null')])
+
+    #
+    def validate_docker_type(self, value):
+        self.docker_type.data = value.data
+
+    def validate_micro_code(self, value):
+        self.micro_code.data = value.data
+
+    def validate_version(self, value):
+        self.version.data = value.data
+
+    def validate_catalog(self, value):
+        self.catalog.data = value.data
+
+    def validate_OS(self, value):
+        self.OS.data = value.data
+
+    def validate_publish_date(self, value):
+        self.publish_date.data = value.data
+
+    def validate_data(self, value):
+        self.data.data = value.data
+
+    def validate_kpi(self, value):
+        self.kpi.data = value.data
+
+    def to_dict(self):
+        return self.__column__
 
 
 class ConfigDataForm(BaseForm):

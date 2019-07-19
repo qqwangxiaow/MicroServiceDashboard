@@ -12,12 +12,36 @@ option_performance = {
     tooltip: {
         trigger: 'axis'
     },
-    legend: {
-        bottom: "left",
-        data: ['ClearLinux-Default', 'Ubuntu-Default', 'CentOS-Default','ClearLinux-Clear', 'Ubuntu-Clear', 'CentOS-Clear'],
-        selected: {'ClearLinux-Default': false}
-    },
-    color: ["#005bc2", 'red', '#00b5fb',"#025e79", '#efa3a3', '#bdc7fb'],
+    legend: [{
+        bottom: 0,
+        icon:'circle',
+        textStyle: {color: '#005bc2'},
+        data: ['ClearLinux-Default-Runc', 'Ubuntu-Default-Runc', 'CentOS-Default-Runc','ClearLinux-Clear-Kata', 'Ubuntu-Clear-Kata', 'CentOS-Clear-Kata',],
+        selected:{
+            'ClearLinux-Default-Runc': true,
+        'CentOS-Default-Runc': true,
+        'Ubuntu-Default-Runc': true,
+        'CentOS-clear-Kata': true,
+        'Ubuntu-clear-Kata': true,
+        'ClearLinux-clear-Kata': true,
+        },
+        },
+        {bottom: "left",
+        icon:'circle',
+        textStyle: {color: '#005bc2'},
+        bottom:20,
+        data: ['ClearLinux-Default-Kata','Ubuntu-Default-Kata','CentOS-Default-Kata','ClearLinux-Clear-Runc','Ubuntu-Clear-Runc','CentOS-Clear-Runc'],
+        selected: {
+        'ClearLinux-clear-Runc': true,
+        'Ubuntu-clear-Runc': true,
+        'CentOS-clear-Runc': true,
+        'ClearLinux-Default-Kata': true,
+        'Ubuntu-Default-Kata': true,
+        'CentOS-Default-Kata': true,
+
+        }}
+        ],
+    color: ["red", '#0a549f', '#ff70c1',"skyblue", 'blue', '#00CCCC','purple','#8f8b8b','#e35132','#09e7c0','#6d16fff2','#9bb0c6'],
     toolbox: {
         show: true,
         feature: {
@@ -64,6 +88,7 @@ option_performance = {
     xAxis: [
         {
             type: 'category',
+            rotate:90,
             boundaryGap: false,
             data: ['01', '02', '03', '04', '05', '06', '07'],
             axisLabel: {
@@ -88,113 +113,221 @@ option_performance = {
     ],
     series: [
         {
-            name: 'ClearLinux-Default',
+            name: 'ClearLinux-Default-Runc',
             type: 'line',
             smooth: true,
             lineStyle: {
                 normal: {
-                    color: "#005bc2",
+                    color: "red",
                     width: 2
                 }
             },
             areaStyle: {
                 normal: {
-                    color: "#005bc2",
+                    color: "rgb(0,0,0,0)",
                 }
             },
             itemStyle: {normal: {areaStyle: {type: 'default'}},},
             data: [20, 40, 60, 240, 260, 530, 710]
         },
         {
-            name: 'Ubuntu-Default',
+            name: 'Ubuntu-Default-Runc',
             type: 'line',
             smooth: true,
             lineStyle: {
                 normal: {
-                    color: "red",
+                    color: "#0a549f",
                     width: 2
                 }
             },
             areaStyle: {
                 normal: {
-                    color: "red",
+                    color: "transparent",
                 }
             },
             itemStyle: {normal: {areaStyle: {type: 'default'}}},
             data: [30, 182, 434, 791, 390, 30, 10]
         },
         {
-            name: 'CentOS-Default',
+            name: 'CentOS-Default-Runc',
             type: 'line',
             smooth: true,
             lineStyle: {
                 normal: {
-                    color: "#00b5fb",
+                    color: "#ff70c1",
                     width: 2
                 }
             },
             areaStyle: {
                 normal: {
-                    color: "#00b5fb",
+                    color: "transparent",
                 }
             },
             itemStyle: {normal: {areaStyle: {type: 'default'}}},
-            data: [520, 532, 601, 234, 120, 90, 20]
+            data: []
         },
         {
-            name: 'ClearLinux-Clear',
+            name: 'ClearLinux-Clear-Kata',
             type: 'line',
             smooth: true,
             lineStyle: {
                 normal: {
-                    color: "#025e79",
+                    color: "skyblue",
                     width: 2
                 }
             },
             areaStyle: {
                 normal: {
-                    color: "#025e79"
+                    color: "transparent",
                 }
             },
             itemStyle: {normal: {areaStyle: {type: 'default'}}},
             data: [23, 44, 45, 140, 160, 330, 510]
         },
         {
-            name: 'Ubuntu-Clear',
+            name: 'Ubuntu-Clear-Kata',
             type: 'line',
             smooth: true,
             lineStyle: {
                 normal: {
-                    color: "#efa3a3",
+                    color: "blue",
                     width: 2
                 }
             },
             areaStyle: {
                 normal: {
-                    color: "#efa3a3",
+                    color: "transparent",
                 }
             },
             itemStyle: {normal: {areaStyle: {type: 'default'}}},
             data: [20, 232, 134, 291, 490, 20, 130]
         },
         {
-            name: 'CentOS-Clear',
+            name: 'CentOS-Clear-Kata',
             type: 'line',
             smooth: true,
             lineStyle: {
                 normal: {
-                    color: "#bdc7fb",
+                    color: "#00CCCC",
                     width: 2
                 }
             },
             areaStyle: {
                 normal: {
-                    color: "#bdc7fb",
+                    color: "transparent",
                 }
             },
             itemStyle: {normal: {areaStyle: {type: 'default'}}},
-            data: [220, 432, 333, 212, 124, 95, 40]
-        }
+            data: []
+        },
+        {
+            name: 'ClearLinux-Default-Kata',
+            type: 'line',
+            smooth: true,
+            lineStyle: {
+                normal: {
+                    color: "purple",
+                    width: 2
+                }
+            },
+            areaStyle: {
+                normal: {
+                    color: "transparent",
+                }
+            },
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: [120, 232, 133, 312, 224, 15, 50]
+        },
+        {
+            name: 'Ubuntu-Default-Kata',
+            type: 'line',
+            smooth: true,
+            lineStyle: {
+                normal: {
+                    color: "#8f8b8b",
+                    width: 2
+                }
+            },
+            areaStyle: {
+                normal: {
+                    color: "transparent",
+                }
+            },
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: [230, 532, 233, 212, 224, 295, 140]
+        },
+        {
+            name: 'CentOS-Default-Kata',
+            type: 'line',
+            smooth: true,
+            lineStyle: {
+                normal: {
+                    color: "#e35132",
+                    width: 2
+                }
+            },
+            areaStyle: {
+                normal: {
+                    color: "transparent",
+                }
+            },
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: []
+        },
+        {
+            name: 'ClearLinux-Clear-Runc',
+            type: 'line',
+            smooth: true,
+            lineStyle: {
+                normal: {
+                    color: "#09e7c0",
+                    width: 2
+                }
+            },
+            areaStyle: {
+                normal: {
+                    color: "transparent",
+                }
+            },
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: [32, 181, 123, 321, 456, 654, 610]
+        },
+        {
+            name: 'Ubuntu-Clear-Runc',
+            type: 'line',
+            smooth: true,
+            lineStyle: {
+                normal: {
+                    color: "#6d16fff2",
+                    width: 2
+                }
+            },
+            areaStyle: {
+                normal: {
+                    color: "transparent",
+                }
+            },
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: [330, 232, 344, 921, 490, 150, 126]
+        },
+        {
+            name: 'CentOS-Clear-Runc',
+            type: 'line',
+            smooth: true,
+            lineStyle: {
+                normal: {
+                    color: "#9bb0c6",
+                    width: 2
+                }
+            },
+            areaStyle: {
+                normal: {
+                    color: "transparent",
+                }
+            },
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: []
+        },
     ]
 };
 

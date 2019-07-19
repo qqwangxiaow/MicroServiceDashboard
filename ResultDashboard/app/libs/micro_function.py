@@ -163,57 +163,8 @@ def store_performance(data):
 
 
 def get_httpd():
-    j = {
-        'columns': [
-            {"title": 'MicroService'},
-            {"title": "Catalog"},
-            {"title": "Performance"},
-        ],
-        "rows": [
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-        ]
-    }
-    return j
+    pass
 
 
 def get_python():
-    j = {'columns': [
-        {"title": 'MicroService'},
-        {"title": "Catalog"},
-        {"title": "Performance"},
-    ],
-        "rows": [
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-            ['HTTPD', 'web', '43MB', ],
-        ]
-    }
-    return j
+    pass

@@ -29,6 +29,8 @@ class MicroPerformance(BaseData):
     publish_date = Column(DateTime, nullable=False)
     data = Column(Float(), nullable=False)
     kpi = Column(String(64), nullable=False)
+    machine = Column(String(128), nullable=False)
+    runtime = Column(Enum('runc', 'kata'))
 
 
 class HostConfig(BaseData):

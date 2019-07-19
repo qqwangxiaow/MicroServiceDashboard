@@ -15,6 +15,7 @@ option_performance = {
     legend: {
         bottom: "left",
         data: ['ClearLinux-Default', 'Ubuntu-Default', 'CentOS-Default','ClearLinux-Clear', 'Ubuntu-Clear', 'CentOS-Clear'],
+        selected: {'ClearLinux-Default': false}
     },
     color: ["#005bc2", 'red', '#00b5fb',"#025e79", '#efa3a3', '#bdc7fb'],
     toolbox: {
@@ -101,7 +102,7 @@ option_performance = {
                     color: "#005bc2",
                 }
             },
-            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            itemStyle: {normal: {areaStyle: {type: 'default'}},},
             data: [20, 40, 60, 240, 260, 530, 710]
         },
         {

@@ -127,27 +127,28 @@ def get_performance(micro_code, kpi, machine='i9'):
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
         UbuntuDefaultRunc = \
-            Ubuntu[(Ubuntu['docker_type'] == 'Default Docker') & Ubuntu['runtime'] == 'runc'].sort_values(
+            Ubuntu[(Ubuntu['docker_type'] == 'Default Docker') & (Ubuntu['runtime'] == 'runc')].sort_values(
                 'publish_date', ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
+        print(UbuntuDefaultRunc)
         UbuntuDefaultKata = \
-            Ubuntu[(Ubuntu['docker_type'] == 'Default Docker') & Ubuntu['runtime'] == 'kata'].sort_values(
+            Ubuntu[(Ubuntu['docker_type'] == 'Default Docker') & (Ubuntu['runtime'] == 'kata')].sort_values(
                 'publish_date', ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
         UbuntuClearRunc = \
-            Ubuntu[(Ubuntu['docker_type'] == 'Clear Docker') & Ubuntu['runtime'] == 'runc'].sort_values(
+            Ubuntu[(Ubuntu['docker_type'] == 'Clear Docker') & (Ubuntu['runtime'] == 'runc')].sort_values(
                 'publish_date', ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
         UbuntuClearKata = \
-            Ubuntu[(Ubuntu['docker_type'] == 'Clear Docker') & Ubuntu['runtime'] == 'kata'].sort_values(
+            Ubuntu[(Ubuntu['docker_type'] == 'Clear Docker') & (Ubuntu['runtime'] == 'kata')].sort_values(
                 'publish_date', ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
         CentOSDefaultRunc = \
-            CentOS[(CentOS['docker_type'] == 'Default Docker') & (Ubuntu['runtime'] == 'runc')].sort_values(
+            CentOS[(CentOS['docker_type'] == 'Default Docker') & (CentOS['runtime'] == 'runc')].sort_values(
                 'publish_date', ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
@@ -157,12 +158,12 @@ def get_performance(micro_code, kpi, machine='i9'):
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
         CentOSClearRunc = \
-            CentOS[(CentOS['docker_type'] == 'Clear Docker') & (Ubuntu['runtime'] == 'runc')].sort_values(
+            CentOS[(CentOS['docker_type'] == 'Clear Docker') & (CentOS['runtime'] == 'runc')].sort_values(
                 'publish_date', ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
         CentOSClearKata = \
-            CentOS[(CentOS['docker_type'] == 'Clear Docker') & (Ubuntu['runtime'] == 'kata')].sort_values(
+            CentOS[(CentOS['docker_type'] == 'Clear Docker') & (CentOS['runtime'] == 'kata')].sort_values(
                 'publish_date', ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()

@@ -13,20 +13,17 @@ app = create_app()
 with app.app_context():
     with db.auto_commit():
         for i in range(2000):
-            os = ["CentOS", "ClearLinux", "Ubuntu"] * 1000
-            type_ = ["Clear Docker", "Default Docker"] * 1000
+            os = random.choice(["CentOS", "ClearLinux", "Ubuntu"])
             v = ["pybenchmark Average"]
             obj = MicroPerformance()
             obj.micro_code = 1001
-            obj.OS = os[i]
-            obj.runtime = 'kata'
+            obj.OS = os
+            obj.runtime = random.choice(['kata', 'runc'])
             obj.machine = 'i9'
-            # obj.size = float("33.{}".format(i))
             obj.version = "v1.0.{}".format(i)
             obj.catalog = "Language"
-            obj.docker_type = 'Clear Docker'
+            obj.docker_type = random.choice(['Default Docker', 'Clear Docker'])
             obj.kpi = v[0]
             obj.data = i
             obj.publish_date = datetime.datetime.now()
             db.session.add(obj)
-

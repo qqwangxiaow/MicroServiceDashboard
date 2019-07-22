@@ -4,24 +4,29 @@
 # Create timeTime    : 6/4/19 1:08 AM
 from app import create_app
 from app.models.base import db
-from app.models.data import MicroSizeData
+from app.models.data import MicroSizeData, MicroPerformance
 import random
 from app.validators.forms import StorePerformance
+import datetime
 
 app = create_app()
 with app.app_context():
     with db.auto_commit():
-        for i in range(1000):
+        for i in range(2000):
             os = ["CentOS", "ClearLinux", "Ubuntu"] * 1000
             type_ = ["Clear Docker", "Default Docker"] * 1000
-            v = ["pybenchmark Average", "pybenchmark minimum"] * 1000
+            v = ["pybenchmark Average"]
             obj = MicroPerformance()
             obj.micro_code = 1001
             obj.OS = os[i]
+            obj.runtime = 'kata'
+            obj.machine = 'i9'
             # obj.size = float("33.{}".format(i))
             obj.version = "v1.0.{}".format(i)
             obj.catalog = "Language"
-            obj.docker_type = type_[i]
-            obj.kpi = v[i]
+            obj.docker_type = 'Clear Docker'
+            obj.kpi = v[0]
             obj.data = i
+            obj.publish_date = datetime.datetime.now()
             db.session.add(obj)
+

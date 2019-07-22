@@ -85,7 +85,7 @@ def get_size(micro_code):
     return data
 
 
-def get_performance(micro_code, kpi):
+def get_performance(micro_code, kpi, machine='i9'):
     try:
         micro = MicroServiceEnum(int(micro_code)).name
         kpi_define = getattr(KPI, micro)
@@ -95,6 +95,7 @@ def get_performance(micro_code, kpi):
         filters = {
             MicroPerformance.micro_code == micro_code,
             MicroPerformance.kpi == kpi,
+            MicroPerformance.machine == machine,
         }
         micros = MicroPerformance.query.filter(*filters).all()
     except Exception as e:
@@ -105,28 +106,64 @@ def get_performance(micro_code, kpi):
         clear = performance_df[performance_df['OS'] == 'ClearLinux']
         Ubuntu = performance_df[performance_df['OS'] == 'Ubuntu']
         CentOS = performance_df[performance_df['OS'] == 'CentOS']
-        default_clear = \
-            clear[clear['docker_type'] == 'Default Docker'].sort_values('publish_date', ascending=False).iloc[
+        ClearLinuxDefaultRunc = \
+            clear[(clear['docker_type'] == 'Default Docker') & (clear['runtime'] == 'runc')].sort_values('publish_date',
+                                                                                                         ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
-        default_ubnutu = \
-            Ubuntu[Ubuntu['docker_type'] == 'Default Docker'].sort_values('publish_date', ascending=False).iloc[
+        ClearLinuxDefaultKata = \
+            clear[(clear['docker_type'] == 'Default Docker') & (clear['runtime'] == 'kata')].sort_values('publish_date',
+                                                                                                         ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
-        default_centos = \
-            CentOS[CentOS['docker_type'] == 'Default Docker'].sort_values('publish_date', ascending=False).iloc[
+        ClearLinuxClearRunc = \
+            clear[(clear['docker_type'] == 'Clear Docker') & (clear['runtime'] == 'runc')].sort_values('publish_date',
+                                                                                                       ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
-        clear_clear = \
-            clear[clear['docker_type'] == 'Clear Docker'].sort_values('publish_date', ascending=False).iloc[
+        ClearLinuxClearKata = \
+            clear[(clear['docker_type'] == 'Clear Docker') & (clear['runtime'] == 'kata')].sort_values('publish_date',
+                                                                                                       ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
-        clear_ubnutu = \
-            Ubuntu[Ubuntu['docker_type'] == 'Clear Docker'].sort_values('publish_date', ascending=False).iloc[
+        UbuntuDefaultRunc = \
+            Ubuntu[(Ubuntu['docker_type'] == 'Default Docker') & Ubuntu['runtime'] == 'runc'].sort_values(
+                'publish_date', ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
-        clear_centos = \
-            CentOS[CentOS['docker_type'] == 'Clear Docker'].sort_values('publish_date', ascending=False).iloc[
+        UbuntuDefaultKata = \
+            Ubuntu[(Ubuntu['docker_type'] == 'Default Docker') & Ubuntu['runtime'] == 'kata'].sort_values(
+                'publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        UbuntuClearRunc = \
+            Ubuntu[(Ubuntu['docker_type'] == 'Clear Docker') & Ubuntu['runtime'] == 'runc'].sort_values(
+                'publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        UbuntuClearKata = \
+            Ubuntu[(Ubuntu['docker_type'] == 'Clear Docker') & Ubuntu['runtime'] == 'kata'].sort_values(
+                'publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        CentOSDefaultRunc = \
+            CentOS[(CentOS['docker_type'] == 'Default Docker') & (Ubuntu['runtime'] == 'runc')].sort_values(
+                'publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        CentOSDefaultKata = \
+            CentOS[(CentOS['docker_type'] == 'Default Docker') & (CentOS['runtime'] == 'kata')].sort_values(
+                'publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        CentOSClearRunc = \
+            CentOS[(CentOS['docker_type'] == 'Clear Docker') & (Ubuntu['runtime'] == 'runc')].sort_values(
+                'publish_date', ascending=False).iloc[
+            0:app.config['SIZE_ROUND']][
+                'data'].tolist()
+        CentOSClearKata = \
+            CentOS[(CentOS['docker_type'] == 'Clear Docker') & (Ubuntu['runtime'] == 'kata')].sort_values(
+                'publish_date', ascending=False).iloc[
             0:app.config['SIZE_ROUND']][
                 'data'].tolist()
         columns = [
@@ -141,7 +178,9 @@ def get_performance(micro_code, kpi):
                 performance_df[
                     ['docker_type', 'MicroService', 'catalog', 'data', 'publish_date', 'version']].iterrows()]
         data = {
-            "pfData": [default_clear, default_ubnutu, default_centos, clear_clear, clear_ubnutu, clear_centos],
+            "pfData": [ClearLinuxDefaultRunc, UbuntuDefaultRunc, CentOSDefaultRunc, ClearLinuxClearKata,
+                       UbuntuClearKata, CentOSClearKata, ClearLinuxDefaultKata, UbuntuDefaultKata, CentOSDefaultKata,
+                       ClearLinuxClearRunc, UbuntuClearRunc, CentOSClearRunc],
             "columns": columns,
             "rows": rows,
             "round": list(range(1, app.config['SIZE_ROUND'] + 1)),

@@ -8,7 +8,7 @@ from wtforms.validators import DataRequired, Length, Email, Regexp, length, Vali
 from app.libs.enums import ClientTypeEnum, MicroServiceEnum
 from app.models import User, MicroPerformance
 from app.validators.base import BaseForm
-from app.libs.error_code import MicroServiceNotFoundError
+from app.libs.error_code import MicroServiceNotFoundError, ServerError
 import datetime
 
 
@@ -83,7 +83,9 @@ class PerformanceForm(BaseForm):
 
 
 class StorePerformance(BaseForm):
-    __column__ = ('publish_date', 'catalog', 'version', 'micro_code', 'docker_type', 'data', 'kpi', 'OS')
+    __column__ = ('publish_date', 'catalog', 'version', 'micro_code',
+                  'docker_type', 'data', 'kpi', 'OS', 'machine', 'runtime'
+                  )
     docker_type = StringField(validators=[DataRequired(message='can\'t be null')])
     micro_code = IntegerField(validators=[DataRequired(message='can\'t be null')])
 
@@ -93,8 +95,9 @@ class StorePerformance(BaseForm):
     publish_date = DateTimeField(default=datetime.datetime.now())
     data = FloatField(validators=[DataRequired(message='can\'t be null')])
     kpi = StringField(validators=[DataRequired(message='can\'t be null')])
+    machine = StringField(validators=[DataRequired(message='can\'t be null')])
+    runtime = StringField(validators=[DataRequired(message='can\'t be null')])
 
-    #
     def validate_docker_type(self, value):
         self.docker_type.data = value.data
 
@@ -118,6 +121,14 @@ class StorePerformance(BaseForm):
 
     def validate_kpi(self, value):
         self.kpi.data = value.data
+
+    def validate_machine(self, value):
+        self.machine.data = value.data
+
+    def validate_runtime(self, value):
+        if not value.data in ['runc', 'kata']:
+            raise ServerError('runtime must be "runc" or "kata"')
+        self.runtime.data = value.data
 
     def to_dict(self):
         return self.__column__

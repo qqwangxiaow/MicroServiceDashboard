@@ -99,7 +99,7 @@ class StorePerformance(BaseForm):
     runtime = StringField(validators=[DataRequired(message='can\'t be null')])
 
     def validate_docker_type(self, value):
-        if not value.data in ['Clear Docker', 'Default Docker']:
+        if value.data not in ['Clear Docker', 'Default Docker']:
             raise ServerError('runtime must be "Clear Docker" or "Default Docker"')
         self.docker_type.data = value.data
 
@@ -113,7 +113,7 @@ class StorePerformance(BaseForm):
         self.catalog.data = value.data
 
     def validate_OS(self, value):
-        if not value.data in ['CentOS', 'ClearLinux', 'Ubuntu']:
+        if value.data not in ['CentOS', 'ClearLinux', 'Ubuntu']:
             raise ServerError('runtime must be "CentOS","ClearLinux" or "Ubuntu"')
         self.OS.data = value.data
 
@@ -130,7 +130,7 @@ class StorePerformance(BaseForm):
         self.machine.data = value.data
 
     def validate_runtime(self, value):
-        if not value.data in ['runc', 'kata']:
+        if value.data not in ['runc', 'kata']:
             raise ServerError('runtime must be "runc" or "kata"')
         self.runtime.data = value.data
 
